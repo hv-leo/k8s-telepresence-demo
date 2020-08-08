@@ -1,0 +1,20 @@
+plugins {
+	id 'org.springframework.boot' version '2.2.2.RELEASE'
+	id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+	id 'java'
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+}
+
+task buildImage(type:Exec) {
+    dependsOn(":server:build")
+	workingDir "."
+	commandLine "docker", "image", "build", "-t", "${serverImgName}:${version}", "."
+}
