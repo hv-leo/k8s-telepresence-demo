@@ -15,8 +15,9 @@ You need to have [Docker](https://docs.docker.com), [Kubectl](https://kubernetes
     - Go to the server folder: ```$ cd server```
     - Build a local docker image: ```$ docker build -t k8s-demo-server-img .```
     - **Swap** the **remote deployment** with the **local Docker image**: ```$ telepresence --swap-deployment k8s-demo:server --expose 8000:8002 --docker-run --rm -it -v $(pwd):/usr/src/app k8s-demo-server-img```
-    - If we want to **remote debug** the back-end: ```$ telepresence --swap-deployment k8s-demo:server --expose 8000:8002 --docker-run --rm -it -p 5005:5005 -e JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,address=5005,server=y,suspend=y -v $(pwd):/usr/src/app k8s-demo-server-img```
-
+    - If you want to **remote debug** the back-end: ```$ telepresence --swap-deployment k8s-demo:server --expose 8000:8002 --docker-run --rm -it -p 5005:5005 -e JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,address=5005,server=y,suspend=y -v $(pwd):/usr/src/app k8s-demo-server-img```
+    - In case you are **using a Kubernetes client**: ```telepresence --mount /tmp/known --swap-deployment k8s-demo:server --expose 8000:8002 --docker-run --rm -it -v $(pwd):/usr/src/app -v=/tmp/known/var/run/secrets:/var/run/secrets k8s-demo-server-img```
+    - **All in one!**: ```telepresence --mount /tmp/known --swap-deployment k8s-demo:server --expose 8000:8002 --docker-run --rm -it -p 5005:5005 -e JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,address=5005,server=y,suspend=y -v $(pwd):/usr/src/app -v=/tmp/known/var/run/secrets:/var/run/secrets k8s-demo-server-img```
 ### Project Structure
 <pre>
 |-- client/
@@ -49,7 +50,9 @@ You need to have [Docker](https://docs.docker.com), [Kubectl](https://kubernetes
 ### Demo
 To access the application: 
 - **Front-end**: ```http://<hostname>/client```
-- **Backend**: ```http://<hostname>/server```
+- **Backend**: 
+    - ```http://<hostname>/server```
+    - ```http://<hostname>/server/services```
 
 ![K8s Demo Web App](https://github.com/hv-leo/k8s-telepresence-demo/blob/master/docs/k8s-demo-app.png "K8s Demo Web App")
 

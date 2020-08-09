@@ -11,6 +11,7 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation "io.fabric8:kubernetes-client:4.9.1"
 }
 
 task buildImage(type:Exec) {
